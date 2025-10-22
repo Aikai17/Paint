@@ -4,3 +4,12 @@
 
 https://github.com/user-attachments/assets/b01e9da6-5a98-4822-bd63-5d71abc4b5d6
 
+## Сборка
+Через QtCreator или:
+```
+  git clone git@github.com:Aikai17/Paint.git
+  cd Paint
+  mkdir build
+  cmake ..
+  make 
+```
