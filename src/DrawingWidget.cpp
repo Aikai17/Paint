@@ -63,11 +63,10 @@ void DrawingWidget::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
         switch(currentMode) {
         case DrawShape:
-            if (!isDrawing) {
-                startPoint = event->pos();
-                tempRect = QRect(startPoint, QSize());
-                isDrawing = true;
-            }
+            startPoint = event->pos();
+            tempRect = QRect(startPoint, QSize());
+            isDrawing = true;
+
             break;
 
         case Connect:
@@ -92,7 +91,7 @@ void DrawingWidget::mousePressEvent(QMouseEvent* event) {
             break;
 
         case Move:
-            if (!isMoving) {
+            { //figure brackets to deal with switch/case scope
                 auto shape = m_data.findShapeAt(event->pos());
                 if (shape) {
                     movingShapeId = shape->id();
@@ -121,9 +120,9 @@ void DrawingWidget::mousePressEvent(QMouseEvent* event) {
 void DrawingWidget::mouseMoveEvent(QMouseEvent* event) {
     lastMousePos = event->pos();
 
-    if (isDrawing && currentMode == DrawShape) {
+    if (isDrawing) {
         tempRect = QRect(startPoint, event->pos()).normalized();
-    } else if (isMoving && currentMode == Move) {
+    } else if (isMoving) {
         auto shape = m_data.findShapeById(movingShapeId);
         if (shape) {
             QPoint delta = lastMousePos - moveStartPos;
@@ -137,7 +136,7 @@ void DrawingWidget::mouseMoveEvent(QMouseEvent* event) {
 
 void DrawingWidget::mouseReleaseEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
-        if (isDrawing && currentMode == DrawShape) {
+        if (isDrawing) {
             auto newShape = ShapeFactory::createShape(currentShapeType, m_data.nextShapeId(), tempRect);
             if (newShape) {
                 m_data.addShape(newShape);
@@ -146,7 +145,7 @@ void DrawingWidget::mouseReleaseEvent(QMouseEvent* event) {
             }
             isDrawing = false;
             tempRect = QRect();
-        } else if (isMoving && currentMode == Move) {
+        } else if (isMoving) {
             isMoving = false;
             updateCursor();
             emit documentModified();
