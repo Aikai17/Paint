@@ -13,9 +13,7 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
-        main.cpp
-
-
+    src/main.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -39,16 +37,13 @@ else()
 
         add_executable(painting
             ${PROJECT_SOURCES}
-            Shape.h Shape.cpp
-            Connection.h
-            DrawingWidget.h DrawingWidget.cpp
-            MainWindow.h MainWindow.cpp
-            Connection.cpp
-            DrawingData.cpp
-            DrawingData.h
-
-
-
+            src/Shape.h src/Shape.cpp
+            src/Connection.h
+            src/DrawingWidget.h src/DrawingWidget.cpp
+            src/MainWindow.h src/MainWindow.cpp
+            src/Connection.cpp
+            src/DrawingData.cpp
+            src/DrawingData.h
         )
     endif()
 endif()
